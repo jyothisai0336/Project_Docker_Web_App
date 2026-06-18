@@ -1,217 +1,552 @@
-/* ===== GLASSMORPHISM THEME - profile.css ===== */
+/* ===== POLISHED PROFESSIONAL THEME - profile.css ===== */
 
+/* ---- Google Fonts Import ---- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* ---- Base & Body ---- */
+body,
 .mainbody {
-  background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-  min-height: 100vh;
+    background: #f0f2f5;
+    min-height: 100vh;
+    font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: #1a1a2e;
 }
 
-body {
-  background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-  background-attachment: fixed;
-  min-height: 100vh;
-  color: #e2e8f0;
-  font-family: 'Segoe UI', sans-serif;
-}
-
-/* ---- Glassmorphism Navbar ---- */
+/* ---- Navbar ---- */
 .navbar-wrapper {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 20;
-  margin-left: -15px;
-  margin-right: -15px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    margin-left: 0;
+    margin-right: 0;
 }
 
 .navbar-custom {
-  background: rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    background: #1a1a2e;
+    border-bottom: none;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.25);
+    min-height: 56px;
 }
 
 .navbar-wrapper .container {
-  padding-left: 0;
-  padding-right: 0;
+    padding-left: 0;
+    padding-right: 0;
 }
+
 .navbar-wrapper .navbar {
-  padding-left: 15px;
-  padding-right: 15px;
-}
-
-.navbar-content {
-  width: 320px;
-  padding: 15px;
-  padding-bottom: 0px;
-}
-.navbar-content:before,
-.navbar-content:after {
-  display: table;
-  content: "";
-  line-height: 0;
-}
-
-.navbar-nav.navbar-right:last-child {
-  margin-right: 15px !important;
-}
-
-.navbar-footer {
-  background: rgba(255, 255, 255, 0.05);
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-bottom: 0;
+    border-radius: 0;
 }
 
 .navbar-brand,
-.navbar-toggle,
 .brand_network {
-  color: #e2e8f0 !important;
-  font-weight: 700;
-  letter-spacing: 0.5px;
+    color: #ffffff !important;
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: 0.3px;
+}
+
+.brand_network {
+    color: rgba(255, 255, 255, 0.5) !important;
+    float: left;
+    position: absolute;
+    left: 70px;
+    top: 30px;
+    font-size: 11px;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
 }
 
 .navbar-custom .navbar-nav > li > a {
-  color: rgba(255, 255, 255, 0.85) !important;
-  font-weight: 600;
-  transition: color 0.2s ease;
-}
-.navbar-custom .navbar-nav > li > a:hover {
-  color: #a78bfa !important;
+    color: rgba(255, 255, 255, 0.85) !important;
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 0.2px;
+    padding: 18px 16px;
+    transition: color 0.2s ease, background 0.2s ease;
 }
 
-.navbar-custom .navbar-toggle {
-  border-color: rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.08);
+.navbar-custom .navbar-nav > li > a:hover {
+    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+}
+
+.navbar-custom .navbar-nav > li.active > a {
+    color: #6c8ebf !important;
+    background: transparent !important;
+}
+
+.navbar-toggle {
+    border-color: rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+    margin-top: 12px;
+}
+
+.navbar-toggle .icon-bar {
+    background-color: rgba(255, 255, 255, 0.85);
+}
+
+.navbar-content {
+    width: 320px;
+    padding: 15px;
+    padding-bottom: 0;
+}
+
+.navbar-content:before,
+.navbar-content:after {
+    display: table;
+    content: "";
+    line-height: 0;
+}
+
+.navbar-nav.navbar-right:last-child {
+    margin-right: 0 !important;
+}
+
+.navbar-footer {
+    background: rgba(0, 0, 0, 0.15);
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
 }
 
 .navbar-footer-content {
-  padding: 15px;
+    padding: 15px;
 }
 
+/* ---- Dropdown Menu ---- */
 .dropdown-menu {
-  padding: 0px;
-  overflow: hidden;
-  background: rgba(20, 18, 50, 0.85);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 10px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    padding: 6px 0;
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 10px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    min-width: 200px;
 }
+
 .dropdown-menu > li > a {
-  color: rgba(255, 255, 255, 0.85) !important;
+    color: #2d3748 !important;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 9px 18px;
+    transition: background 0.15s ease;
 }
+
 .dropdown-menu > li > a:hover {
-  background: rgba(102, 126, 234, 0.25) !important;
-  color: #fff !important;
+    background: #f7f8fa !important;
+    color: #1a1a2e !important;
 }
 
-.brand_network {
-  color: rgba(255, 255, 255, 0.55);
-  float: left;
-  position: absolute;
-  left: 70px;
-  top: 30px;
-  font-size: smaller;
-}
-
-.post-content {
-  margin-left: 58px;
-}
-
+/* ---- Badge ---- */
 .badge-important {
-  margin-top: 3px;
-  margin-left: 25px;
-  position: absolute;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+    margin-top: 3px;
+    margin-left: 25px;
+    position: absolute;
+    background: #e74c3c;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 6px;
 }
 
 /* ---- Container ---- */
 .container {
-  max-width: 700px;
-  width: 100%;
-  margin: 0 auto;
-  position: relative;
+    max-width: 760px;
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
 }
 
-/* ---- Glass Section Cards (contact, technologies, about) ---- */
+/* ---- Profile Header Card ---- */
+.profile-header {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.06);
+    padding: 28px 32px 0;
+    margin-bottom: 6px;
+    border: 1px solid #e8eaf0;
+}
+
+/* ---- Profile Username & Email ---- */
+.profile-header h1,
+.profile-header .username {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1a1a2e;
+    letter-spacing: -0.3px;
+    margin-bottom: 2px;
+}
+
+.profile-header .email,
+.profile-header small {
+    color: #64748b;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+/* ---- Hashtags / Tags ---- */
+.profile-header .tags,
+.profile-header a[href*="#"] {
+    color: #3b82f6;
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    margin-right: 4px;
+}
+
+.profile-header .tags:hover,
+.profile-header a[href*="#"]:hover {
+    color: #1d4ed8;
+    text-decoration: underline;
+}
+
+/* ---- Profile Nav Tabs ---- */
+.profile-header .nav-tabs,
+.profile-tabs {
+    border-bottom: none;
+    margin-top: 20px;
+}
+
+.profile-header .nav-tabs > li > a,
+.profile-tabs > li > a {
+    color: #64748b !important;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 12px 20px;
+    border: none;
+    border-bottom: 3px solid transparent;
+    border-radius: 0;
+    background: transparent !important;
+    transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.profile-header .nav-tabs > li > a:hover,
+.profile-tabs > li > a:hover {
+    color: #1a1a2e !important;
+    border-bottom-color: #cbd5e1;
+    background: transparent !important;
+}
+
+.profile-header .nav-tabs > li.active > a,
+.profile-tabs > li.active > a {
+    color: #3b82f6 !important;
+    border-bottom: 3px solid #3b82f6 !important;
+    background: transparent !important;
+}
+
+/* ---- Left Sidebar ---- */
+.sidebar-left {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e8eaf0;
+    overflow: hidden;
+}
+
+.sidebar-left img,
+.profile-avatar img {
+    width: 100%;
+    display: block;
+}
+
+.sidebar-section {
+    padding: 20px 22px;
+    border-top: 1px solid #f1f3f7;
+}
+
+.sidebar-section h4,
+.sidebar-section .label-heading {
+    font-size: 11px;
+    font-weight: 700;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+}
+
+.sidebar-section p,
+.sidebar-section .bio-text {
+    font-size: 14px;
+    color: #374151;
+    line-height: 1.6;
+}
+
+/* ---- Post Cards ---- */
+.post-card {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07), 0 2px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e8eaf0;
+    padding: 24px 28px;
+    margin-bottom: 16px;
+    transition: box-shadow 0.2s ease;
+}
+
+.post-card:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1), 0 6px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* ---- Post Content ---- */
+.post-content {
+    margin-left: 58px;
+}
+
+.post-content h4,
+.post-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1a1a2e;
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+.post-content p,
+.post-body {
+    font-size: 14px;
+    color: #374151;
+    line-height: 1.7;
+}
+
+.post-meta,
+.post-timestamp {
+    font-size: 12px;
+    color: #94a3b8;
+    font-weight: 500;
+}
+
+.post-author-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1d4ed8;
+    text-decoration: none;
+}
+
+.post-author-name:hover {
+    color: #1e40af;
+    text-decoration: underline;
+}
+
+/* ---- Action Buttons (Like, Reshare, Comment) ---- */
+.post-actions {
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid #f1f3f7;
+    display: flex;
+    gap: 8px;
+}
+
+.post-actions .btn,
+.btn-action {
+    font-size: 13px;
+    font-weight: 600;
+    padding: 7px 16px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+    color: #475569;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.post-actions .btn:hover,
+.btn-action:hover {
+    background: #f1f5f9;
+    color: #1e293b;
+    border-color: #cbd5e1;
+    transform: translateY(-1px);
+}
+
+/* Public badge */
+.badge-public,
+.post-visibility {
+    font-size: 12px;
+    color: #64748b;
+    font-weight: 500;
+}
+
+/* ---- Comment Input ---- */
+textarea.comment-input,
+.comment-box,
+input[name="comment"],
+textarea[placeholder="Comment"] {
+    background: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    color: #1a1a2e;
+    font-size: 14px;
+    padding: 12px 16px;
+    width: 100%;
+    resize: vertical;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+}
+
+textarea.comment-input:focus,
+.comment-box:focus,
+input[name="comment"]:focus,
+textarea[placeholder="Comment"]:focus {
+    background: #ffffff;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+    outline: none;
+}
+
+/* ---- Friends Button ---- */
+.btn-friends,
+.btn-primary.btn-sm {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: #ffffff !important;
+    border: none;
+    border-radius: 8px;
+    padding: 9px 22px;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    box-shadow: 0 2px 10px rgba(37, 99, 235, 0.3);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-friends:hover,
+.btn-primary.btn-sm:hover {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.4);
+    transform: translateY(-1px);
+}
+
+/* ---- Icon buttons (email, mentions, block) ---- */
+.icon-action-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+    color: #64748b;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.icon-action-btn:hover {
+    background: #f1f5f9;
+    color: #1e293b;
+    border-color: #cbd5e1;
+}
+
+/* ---- Contact / Technologies / About Sections ---- */
 #contact input[type="text"],
 #contact input[type="email"],
 #contact input[type="tel"],
 #contact input[type="url"],
 #contact textarea,
 #contact button[type="submit"] {
-  font: 400 13px/16px 'Segoe UI', Helvetica, Arial, sans-serif;
+    font: 400 14px/1.5 'Inter', 'Segoe UI', Helvetica, Arial, sans-serif;
 }
 
 #contact,
 #technologies,
 #about {
-  background: rgba(255, 255, 255, 0.07);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  padding: 30px;
-  margin: 50px 0;
+    background: #ffffff;
+    border: 1px solid #e8eaf0;
+    border-radius: 14px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    padding: 32px;
+    margin: 40px 0;
 }
 
-/* Section headings */
 #contact h3,
 #technologies h3,
 #about h3 {
-  color: #a78bfa;
-  display: block;
-  font-size: 28px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
+    color: #1a1a2e;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.2px;
+    margin-bottom: 6px;
 }
 
 #contact h4,
 #technologies h4,
 #about h4 {
-  margin: 5px 0 15px;
-  display: block;
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.55);
+    margin: 4px 0 18px;
+    font-size: 13px;
+    color: #64748b;
+    font-weight: 400;
 }
 
-/* Glass inputs inside contact form */
 #contact input[type="text"],
 #contact input[type="email"],
 #contact input[type="tel"],
 #contact input[type="url"],
 #contact textarea {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 8px;
-  color: #fff;
-  padding: 10px 14px;
-  width: 100%;
-  transition: all 0.3s ease;
-}
-#contact input:focus,
-#contact textarea:focus {
-  background: rgba(255, 255, 255, 0.14);
-  border-color: rgba(167, 139, 250, 0.7);
-  box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.2);
-  outline: none;
+    background: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 8px;
+    color: #1a1a2e;
+    padding: 11px 14px;
+    width: 100%;
+    font-size: 14px;
+    transition: all 0.2s ease;
 }
 
-/* Submit button */
-#contact button[type="submit"] {
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 28px;
-  font-weight: 600;
-  letter-spacing: 0.4px;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.5);
-  transition: all 0.3s ease;
-  cursor: pointer;
+#contact input:focus,
+#contact textarea:focus {
+    background: #ffffff;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+    outline: none;
 }
+
+#contact button[type="submit"] {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 11px 30px;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    box-shadow: 0 2px 10px rgba(37, 99, 235, 0.3);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
 #contact button[type="submit"]:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.7);
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.4);
+}
+
+/* ---- Main Content Area Padding ---- */
+.main-content-area {
+    padding-top: 72px;
+    padding-bottom: 40px;
+}
+
+/* ---- Dividers ---- */
+hr {
+    border: none;
+    border-top: 1px solid #e8eaf0;
+    margin: 0;
+}
+
+/* ---- Scrollbar (webkit) ---- */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #f0f2f5;
+}
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
 }
