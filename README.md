@@ -149,7 +149,7 @@ cd Docker_Web_App
 
 # Build and run with Docker Compose
 docker-compose up --build
-
+```
 ---
 
 ## 📸 Screenshots
