@@ -29,9 +29,11 @@ flowchart LR
 
 | Layer | Technology |
 |---|---|
-| Frontend | *[e.g. React]* |
-| Backend | *[e.g. Spring Boot]* |
-| Database | *[e.g. PostgreSQL / MySQL]* |
+| Frontend | JSP (Java Server Pages) |
+| Backend | Spring MVC 4.2, Spring Security, Hibernate |
+| Database | MySQL 5.7 |
+| App Server | Tomcat 8 (JRE 11) |
+| Build Tool | Maven |
 | Containerization | Docker, Docker Swarm |
 | CI/CD | Jenkins (Declarative Pipeline) |
 | Code Quality | SonarQube |
