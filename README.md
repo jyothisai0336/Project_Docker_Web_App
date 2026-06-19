@@ -132,15 +132,6 @@ environment{
 
 ---
 
-## ✨ Features
-
-- *[User authentication / registration]*
-- *[Create, like, comment on posts]*
-- *[User profiles]*
-- *[Add your actual features here]*
-
----
-
 ## 🖥️ Infrastructure
 
 - **3-node Docker Swarm cluster** self-managed on AWS EC2 (1 manager, 2 worker nodes)
@@ -158,15 +149,17 @@ cd Docker_Web_App
 
 # Build and run with Docker Compose
 docker-compose up --build
-```
-
-App will be available at `http://localhost:<port>`.
 
 ---
 
 ## 📸 Screenshots
 
 > Add 2-3 screenshots of the running app here — these matter more to recruiters than the text.
+<img width="1915" height="956" alt="devops tab" src="https://github.com/user-attachments/assets/78e4d9c4-451f-46bc-9213-3e7b422ce2d3" />
+<img width="1917" height="877" alt="main page" src="https://github.com/user-attachments/assets/f546b38d-7cb4-4395-911e-0a956aec0ef5" />
+<img width="1892" height="867" alt="stageview" src="https://github.com/user-attachments/assets/cc6ba3a3-2be9-475f-8aef-77eaccc4b8ed" />
+<img width="1890" height="650" alt="servers" src="https://github.com/user-attachments/assets/50846fae-44ca-46e0-b8cc-f05b38421e01" />
+
 
 ---
 
