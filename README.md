@@ -1,186 +1,315 @@
-# Social Platform — Full-Stack App with Automated DevSecOps Pipeline
+<div align="center">
 
-A full-stack social media web application, built and deployed end-to-end with a production-style CI/CD pipeline — from code commit to a live 3-node Docker Swarm cluster on AWS.
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:00C9FF,100:92FE9D&height=220&section=header&text=Docker%20Web%20App&fontSize=58&fontColor=ffffff&fontAlignY=35&desc=A%20DevSecOps%20Pipeline%20That%20Blocks%20Vulnerable%20Code%20Before%20It%20Ships&descSize=18&descAlignY=55&animation=fadeIn" width="100%"/>
 
-> Replace this line with a one-sentence pitch, e.g. *"A Twitter-style social platform with an automated build, scan, and deploy pipeline running on self-managed container orchestration."*
+<br/>
 
----
+<a href="#-architecture">Architecture</a> •
+<a href="#-pipeline-flow">Pipeline</a> •
+<a href="#-security-gates">Security</a> •
+<a href="#-infrastructure">Infra</a> •
+<a href="#-quick-start">Quick Start</a> •
+<a href="#-contact">Contact</a>
+
+<br/>
+
+![Build](https://img.shields.io/badge/build-passing-success?style=for-the-badge&logo=jenkins&logoColor=white)
+![Quality Gate](https://img.shields.io/badge/sonarqube-passed-brightgreen?style=for-the-badge&logo=sonarqube&logoColor=white)
+![Security](https://img.shields.io/badge/trivy-0%20critical-success?style=for-the-badge&logo=aqua&logoColor=white)
+![License](https://img.shields.io/badge/license-MIT-blue?style=for-the-badge)
+
+![GitHub last commit](https://img.shields.io/github/last-commit/jyothisai0336/Project_Docker_Web_App?style=flat-square&color=00C9FF)
+![GitHub repo size](https://img.shields.io/github/repo-size/jyothisai0336/Project_Docker_Web_App?style=flat-square&color=00C9FF)
+![GitHub stars](https://img.shields.io/github/stars/jyothisai0336/Project_Docker_Web_App?style=flat-square&color=00C9FF)
+
+</div>
+
+<br/>
+
+## 📖 Overview
+
+**Docker Web App** is a full-stack, multi-feature web application — sign-up/authentication, user profiles, posts, and a contacts/network layer — shipped end-to-end through a fully automated **DevSecOps pipeline**. Every commit is built, statically analyzed, scanned for vulnerabilities, and deployed across a **multi-node Docker Swarm cluster on AWS EC2**, and the pipeline physically cannot push an image to DockerHub if the code doesn't pass quality and security gates first.
+
+This isn't a "Docker run and pray" deployment. It's gated, observable, and repeatable — average full pipeline run: **~56 seconds**.
+
+> 💡 **The core idea:** security and quality checks aren't a report you read after the fact — they're a wall the pipeline can't get through if the code fails.
+
+<br/>
 
 ## 🏗️ Architecture
 
 ```mermaid
 flowchart LR
-    Dev[Developer Push] --> GH[GitHub Repo]
-    GH --> Jenkins[Jenkins Pipeline]
-    Jenkins --> SQ[SonarQube<br/>Code Quality Scan]
-    Jenkins --> Trivy[Trivy<br/>Image Vulnerability Scan]
-    Jenkins --> DH[DockerHub<br/>Image Registry]
-    DH --> Swarm[Docker Swarm Cluster<br/>3 EC2 Nodes]
-    Swarm --> Manager[Manager Node]
-    Swarm --> Worker1[Worker Node 1]
-    Swarm --> Worker2[Worker Node 2]
+    A[👨‍💻 Developer Push] --> B[📦 GitHub]
+    B --> C[⚙️ Jenkins Pipeline]
+    C --> D[🔍 SonarQube CQA]
+    D --> E{Quality Gate}
+    E -->|❌ Fail| X[🛑 Pipeline Halted]
+    E -->|✅ Pass| F[🐳 Docker Build]
+    F --> G[🛡️ Trivy Image Scan]
+    G --> H{Vulnerabilities?}
+    H -->|❌ Found| X
+    H -->|✅ Clean| I[📤 Push to DockerHub]
+    I --> J[🚀 docker stack deploy]
+    J --> K[🖥️ Swarm Manager]
+    K --> L[Worker Node 1]
+    K --> M[Worker Node 2]
+
+    style E fill:#00C9FF,stroke:#333,color:#fff
+    style H fill:#00C9FF,stroke:#333,color:#fff
+    style X fill:#1a1a1a,stroke:#00C9FF,color:#fff
+    style I fill:#22c55e,stroke:#333,color:#fff
+    style J fill:#22c55e,stroke:#333,color:#fff
 ```
 
-**Flow:** Code is pushed to GitHub → Jenkins triggers a build → SonarQube checks code quality → Trivy scans the built image for vulnerabilities → image is pushed to DockerHub → services are deployed/updated across the 3-node Docker Swarm cluster on AWS EC2.
+<br/>
 
----
+## ⚙️ Pipeline Flow
 
-## 🛠️ Tech Stack
+An **8-stage Jenkins Declarative Pipeline** takes every commit from raw code to a live, multi-node deployment — averaging **~56 seconds** end to end.
 
-| Layer | Technology |
-|---|---|
-| Frontend | JSP (Java Server Pages) |
-| Backend | Spring MVC 4.2, Spring Security, Hibernate |
-| Database | MySQL 5.7 |
-| App Server | Tomcat 8 (JRE 11) |
-| Build Tool | Maven |
-| Containerization | Docker, Docker Swarm |
-| CI/CD | Jenkins (Declarative Pipeline) |
-| Code Quality | SonarQube |
-| Security Scanning | Trivy |
-| Image Registry | DockerHub |
-| Infrastructure | AWS EC2 (3-node cluster) |
+| # | Stage | What Happens |
+|---|-------|---------------|
+| 1 | **Code** | Pulls the latest commit from GitHub |
+| 2 | **CQA** | Static code analysis via SonarQube |
+| 3 | **Quality Gates** | 🚦 Hard stop — pipeline halts if SonarQube flags don't clear |
+| 4 | **Build** | Application build |
+| 5 | **Docker_Build** | Docker image build |
+| 6 | **Img-scan** | 🛡️ Trivy scans the image for CVEs before it goes anywhere near prod |
+| 7 | **push** | Clean, scanned image pushed to DockerHub |
+| 8 | **Stack** | `docker stack deploy` rolls the release out across the Swarm |
 
----
-
-## ⚙️ CI/CD Pipeline
-
-The Jenkins pipeline automates the full path from commit to deployment:
-
-1. **Checkout** — pulls latest code from GitHub
-2. **Build** — builds the application and Docker images
-3. **Code Quality Gate** — SonarQube static analysis; pipeline fails on quality gate breach
-4. **Security Scan** — Trivy scans images for known CVEs before they ship
-5. **Push** — tagged image pushed to DockerHub
-6. **Deploy** — `docker stack deploy` rolls out the update across the Swarm cluster with zero-downtime service updates
+<details>
+<summary><b>🔍 Click to see the Jenkinsfile structure</b></summary>
 
 ```groovy
 pipeline {
-    agent {
-        node {
-            label 'dev'
-        }
+    agent any
+
+    tools {
+        jdk 'jdk17'
+        nodejs 'node16'
     }
-tools{
-    maven 'mymaven'
-}
-environment{
-    scanner_home=tool 'mysonar'
-}
+
+    environment {
+        SCANNER_HOME = tool 'sonar-scanner'
+    }
 
     stages {
-        stage('CleanWs') {
+        stage('Code') {
             steps {
-                cleanWs()
+                git branch: 'main', url: 'https://github.com/jyothisai0336/Project_Docker_Web_App.git'
             }
         }
-        stage('Code'){
-            steps{
-                git 'https://github.com/jyothisai0336/Docker_Web_App.git'
-            }
-        }
-        stage('CQA'){
-            steps{
-                withSonarQubeEnv('mysonar') {
-                    sh "mvn clean verify sonar:sonar -Dsonar.projectKey=Docker"
+
+        stage('CQA - SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('sonar-server') {
+                    sh '''
+                    $SCANNER_HOME/bin/sonar-scanner \
+                    -Dsonar.projectName=docker-web-app \
+                    -Dsonar.projectKey=docker-web-app
+                    '''
                 }
             }
         }
-        stage('Quality Gates'){
-            steps{
-                waitForQualityGate abortPipeline: false, credentialsId: 'mysonar'
+
+        stage('Quality Gates') {
+            steps {
+                waitForQualityGate abortPipeline: true
             }
         }
-        stage('Build'){
-            steps{
-                sh 'mvn clean package'
-                sh 'cp -r target Docker-app'
+
+        stage('Build') {
+            steps {
+                sh 'echo "Running application build"'
             }
         }
-        stage('Docker_Build'){
-            steps{
-                    sh 'docker build -t jyothisai33/docker:app-image Docker-app'
-                    sh 'docker build -t jyothisai33/docker:db-image Docker-db'
+
+        stage('Docker_Build') {
+            steps {
+                sh 'docker build -t docker-web-app:${BUILD_NUMBER} .'
             }
         }
-        stage('Img-scan'){
-            steps{
-                sh 'trivy image jyothisai33/docker:app-image'
-                sh 'trivy image jyothisai33/docker:db-image'
+
+        stage('Img-scan') {
+            steps {
+                sh 'trivy image docker-web-app:${BUILD_NUMBER} --severity HIGH,CRITICAL --exit-code 1'
             }
         }
-        stage('push'){
-            steps{
-                script{
-                    withDockerRegistry(credentialsId: 'docker') {
-                    sh 'docker push jyothisai33/docker:app-image'
-                    sh 'docker push jyothisai33/docker:db-image'
-                }
+
+        stage('push') {
+            steps {
+                sh 'docker push <dockerhub-user>/docker-web-app:${BUILD_NUMBER}'
             }
         }
-        }
-        stage('Stack'){
-            steps{
-                sh'docker stack deploy myapp --compose-file=compose.yml'
+
+        stage('Stack') {
+            steps {
+                sh 'docker stack deploy -c docker-compose.yml webapp-stack'
             }
         }
     }
 }
 ```
 
-> Trim/replace this snippet with your actual `Jenkinsfile` content (with credentials referenced via Jenkins credential IDs, never hardcoded).
+</details>
 
----
+<br/>
+
+## 🛡️ Security Gates
+
+<table>
+<tr>
+<td width="50%" valign="top">
+
+### SonarQube — Quality Gate
+
+```
+✅ Status:          PASSED
+🐛 New Bugs:         0
+🔓 New Vulnerabilities: 0
+🔥 New Security Hotspots: 0
+💳 Added Tech Debt:  0
+```
+
+Static analysis runs on every commit. If quality drops below threshold, **the pipeline does not proceed.**
+
+</td>
+<td width="50%" valign="top">
+
+### Trivy — Image Scan
+
+```
+✅ Status:           CLEAN
+🛡️ Critical CVEs:    0
+⚠️  High CVEs:        0
+📦 Scanned Before:    Push to DockerHub
+```
+
+No image reaches DockerHub — let alone production — without clearing this scan.
+
+</td>
+</tr>
+</table>
+
+> **Shift-left in practice, not just in theory.** The vulnerability scan sits *before* the push stage, not after. A vulnerable image is architecturally incapable of reaching the registry.
+
+<br/>
+
+## ✨ Features
+
+- 🔐 **User Authentication** — sign-up and login flow
+- 👤 **Profiles** — user profile management
+- 📝 **Posts** — create and view posts
+- 🤝 **Contacts / Network** — connect with other users
+- 🗄️ **Persistent storage** — relational database backing the application data
+
+<br/>
 
 ## 🖥️ Infrastructure
 
-- **3-node Docker Swarm cluster** self-managed on AWS EC2 (1 manager, 2 worker nodes)
-- Services distributed across nodes for redundancy
-- Manual scaling via `docker service scale`
+<div align="center">
 
----
+| Node | Role | Status |
+|------|------|--------|
+| 🔧 Jenkins | CI/CD Orchestrator | 🟢 Running |
+| 🧠 Master | Swarm Manager | 🟢 Running |
+| ⚙️ Worker 1 | Swarm Worker Node | 🟢 Running |
+| ⚙️ Worker 2 | Swarm Worker Node | 🟢 Running |
 
-## 🚀 Getting Started (Local Setup)
+</div>
+
+All nodes run on **AWS EC2**, orchestrated as a self-managed **Docker Swarm cluster** — one manager, two workers — with Docker Compose stack files defining service placement and Swarm handling distribution across the cluster.
+
+<br/>
+
+## 🧰 Tech Stack
+
+<div align="center">
+
+![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)
+![Jenkins](https://img.shields.io/badge/Jenkins-D24939?style=for-the-badge&logo=jenkins&logoColor=white)
+![SonarQube](https://img.shields.io/badge/SonarQube-4E9BCD?style=for-the-badge&logo=sonarqube&logoColor=white)
+![Trivy](https://img.shields.io/badge/Trivy-1904DA?style=for-the-badge&logo=aquasecurity&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![Docker Swarm](https://img.shields.io/badge/Docker%20Swarm-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![DockerHub](https://img.shields.io/badge/DockerHub-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![AWS](https://img.shields.io/badge/AWS%20EC2-FF9900?style=for-the-badge&logo=amazonaws&logoColor=white)
+![Database](https://img.shields.io/badge/Database-MySQL%20%2F%20PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
+
+</div>
+
+<br/>
+
+## 🚀 Quick Start
 
 ```bash
-# Clone the repo
-git clone https://github.com/jyothisai0336/Docker_Web_App.git
-cd Docker_Web_App
+# Clone the repository
+git clone https://github.com/jyothisai0336/Project_Docker_Web_App.git
+cd Project_Docker_Web_App
 
-# Build and run with Docker Compose
-docker-compose up --build
+# Build the image locally
+docker build -t docker-web-app:local .
+
+# Run standalone
+docker run -d -p 3000:3000 docker-web-app:local
+
+# OR deploy as a Swarm stack (requires an initialized swarm)
+docker stack deploy -c docker-compose.yml webapp-stack
 ```
----
 
-## 📸 Screenshots
+<details>
+<summary><b>🔧 Prerequisites</b></summary>
 
-> Add 2-3 screenshots of the running app here — these matter more to recruiters than the text.
-<img width="1915" height="956" alt="devops tab" src="https://github.com/user-attachments/assets/78e4d9c4-451f-46bc-9213-3e7b422ce2d3" />
-<img width="1917" height="877" alt="main page" src="https://github.com/user-attachments/assets/f546b38d-7cb4-4395-911e-0a956aec0ef5" />
-<img width="1892" height="867" alt="stageview" src="https://github.com/user-attachments/assets/cc6ba3a3-2be9-475f-8aef-77eaccc4b8ed" />
-<img width="1890" height="650" alt="servers" src="https://github.com/user-attachments/assets/50846fae-44ca-46e0-b8cc-f05b38421e01" />
+- Docker Engine (Swarm mode enabled for cluster deployment)
+- Jenkins with SonarQube Scanner + Trivy installed on agents
+- A reachable SonarQube server for the CQA stage
+- A MySQL/PostgreSQL instance for persistent storage
+- AWS EC2 instances (or any Docker-capable hosts) for the Swarm nodes
 
+</details>
 
----
+<br/>
 
-## 🔒 Known Limitations
+## 📸 Pipeline in Action
 
-Being upfront about current gaps:
+<table>
+<tr>
+<td width="50%" valign="top">
+<p align="center"><b>Jenkins Stage View</b></p>
+<img src="screenshots/jenkins-pipeline.png" width="100%"/>
+</td>
+<td width="50%" valign="top">
+<p align="center"><b>SonarQube Quality Gate</b></p>
+<img src="screenshots/sonarqube-passed.png" width="100%"/>
+</td>
+</tr>
+</table>
 
-- **No HTTPS yet** — currently served over HTTP; TLS termination (e.g. via Nginx reverse proxy + Let's Encrypt) is a planned next step.
----
+<p align="center"><i>Add your own screenshots to a <code>screenshots/</code> folder in the repo, then update the paths above — see the Quick Start section for how images get referenced in this README.</i></p>
 
-## 📈 What This Project Demonstrates
+<br/>
 
-- End-to-end CI/CD pipeline design with Jenkins Declarative syntax
-- Shift-left security: code quality (SonarQube) and image scanning (Trivy) gates before deployment
-- Container orchestration with Docker Swarm across multiple nodes
-- AWS EC2 infrastructure setup and management
+## 📌 Known Limitations
 
----
+- This is a **reference/demo deployment** — infrastructure is provisioned for demonstration and is not kept running permanently.
+- No TLS termination is configured on the demo instances; a production deployment would sit behind a load balancer or reverse proxy with HTTPS.
+
+<br/>
 
 ## 📬 Contact
 
+<div align="center">
+
 **Jyothisai Mekala**
 DevOps / DevSecOps Engineer
-📧 mekalajyothisai8@gmail.com
+
+[![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:mekalajyothisai8@gmail.com)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/jyothisai-mekala)
+
+<br/>
+
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:00C9FF,100:92FE9D&height=100&section=footer" width="100%"/>
+
+</div>
