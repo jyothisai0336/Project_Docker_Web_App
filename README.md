@@ -305,8 +305,9 @@ docker stack deploy -c docker-compose.yml webapp-stack
 **Jyothisai Mekala**
 DevOps / DevSecOps Engineer
 
-[![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:mekalajyothisai8@gmail.com)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/jyothisai-mekala)
+[![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:mekalajyothisai3@gmail.com)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](www.linkedin.com/in/jyothisai-mekala-6852a822a
+)
 
 <br/>
 
